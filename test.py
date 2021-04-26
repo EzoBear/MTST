@@ -4,9 +4,26 @@ import numpy as np
 import torch
 import torch.nn as nn
 from torch.utils.data import Dataset, DataLoader
-from sklearn.metrics import precision_score, recall_score, f1_score, accuracy_score
+from sklearn.metrics import precision_score, recall_score, f1_score, accuracy_score, roc_auc_score, matthews_corrcoef
 from tqdm import tqdm
 import os
+
+def roc_auc_score_multiclass(actual_class, pred_class, average = "macro"):
+    """
+    https://stackoverflow.com/questions/39685740/calculate-sklearn-roc-auc-score-for-multi-class
+    """
+    unique_class = set(actual_class)
+    sum_roc_auc = 0
+    for per_class in unique_class:
+        other_class = [x for x in unique_class if x != per_class]
+
+        new_actual_class = [0 if x in other_class else 1 for x in actual_class]
+        new_pred_class = [0 if x in other_class else 1 for x in pred_class]
+
+        roc_auc = roc_auc_score(new_actual_class, new_pred_class, average = average)
+        sum_roc_auc += roc_auc
+
+    return sum_roc_auc/len(unique_class)
 
 class ESC50Data(Dataset):
     def __init__(self, base, df, in_col, out_col):
@@ -79,6 +96,8 @@ def print_result(predict, labels):
     print('Recall: %.3f' % recall_score(labels, predict, average='weighted'))
     print('Accuracy: %.3f' % accuracy_score(labels, predict))
     print('F1 Score: %.3f' % f1_score(labels, predict, average='weighted'))
+    print('matthews_corrcoef: %.3f' % matthews_corrcoef(labels, predict))
+    print('ROC_AUC: %.3f' % roc_auc_score_multiclass(labels, predict))
     print("==============================")
 
 def save_result(path,file_name,result):
