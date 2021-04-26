@@ -5,14 +5,14 @@ Project Structure
 ```
 * MTST
   - ESC-50-master(Dataset)
-  - weights
-      - fold1
+  + weights
+      + fold1
           - weight.pth
           + result.out
-      - fold2
+      + fold2
       ...
-      - fold5
-  - test.py
+      + fold5
+  + test.py
 ```
 
 ## Download
