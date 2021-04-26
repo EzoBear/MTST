@@ -101,7 +101,7 @@ def print_result(predict, labels):
     print("==============================")
 
 def save_result(path,file_name,result):
-    np.savetxt(path+"/"+file_name, result, delimiter=',', fmt='%i')   # X is an array
+    np.savetxt(path+"/"+file_name, result, delimiter=',', fmt='%i')
 
 if __name__ == "__main__":
     df = pd.read_csv('ESC-50-master/meta/esc50.csv')
