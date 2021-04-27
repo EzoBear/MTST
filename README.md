@@ -1,6 +1,6 @@
 # MTST
 
-Project Structure
+## Project Structure
 
 ```
 * MTST
